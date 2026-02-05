@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import type { IThumbnail, AspectRatio } from "/src/assets/assets";
 import SoftBackdrop from "../components/SoftBackdrop";
-import { button } from "motion/react-client";
+
 import AspectRatioSelector from "../components/AspectRatioSelector";
-import { colorSchemes, type ThumbnailStyle } from "../assets/assets";
+import {
+  colorSchemes,
+  dummyThumbnails,
+  type ThumbnailStyle,
+} from "../assets/assets";
 import StyleSelector from "../components/StyleSelector";
 import ColorSchemeSelector from "../components/ColorSchemeSelector";
 import PreviewPanel from "../components/PreviewPanel";
@@ -21,6 +25,27 @@ const Generate = () => {
   );
   const [style, setStyle] = useState<ThumbnailStyle>("Bold & Graphic");
   const [styleDropdownOpen, setStyleDropdownOpen] = useState(false);
+
+  const handleGenerate = async () => {};
+  const fetchThumnail = async () => {
+    if (id) {
+      const thumbnail: any = dummyThumbnails.find(
+        (thumbnail) => thumbnail._id === id,
+      );
+      setThumbnail(thumbnail);
+      setAdditionalDetails(thumbnail.user_prompt);
+      setTitle(thumbnail.title);
+      setColorSchemeId(thumbnail.color_scheme);
+      setAspectRatio(thumbnail.aspect_ratio);
+      setStyle(thumbnail.style);
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    if (id) {
+      fetchThumnail();
+    }
+  }, [id]);
 
   return (
     <>
@@ -86,7 +111,10 @@ const Generate = () => {
               </div>
               {/* button */}
               {!id && (
-                <button className="text-[15px] w-full py-3.5 roundedxl font-medium bg-linear-to-b from-pink-500 to-pink-600 hover:bg-pink-700 disabled:cursor-not-allowed transition-colors">
+                <button
+                  onClick={handleGenerate}
+                  className="text-[15px] w-full py-3.5 roundedxl font-medium bg-linear-to-b from-pink-500 to-pink-600 hover:bg-pink-700 disabled:cursor-not-allowed transition-colors"
+                >
                   {loading ? "Generating...;" : "Generate Thumnail"}
                 </button>
               )}
