@@ -2,6 +2,10 @@ import express ,{Request, Response} from "express"
 import dotenv from "dotenv";
 import cors from 'cors'
 dotenv.config();
+import connectDB from "./configs/db.js";
+// const connectDB = require("./configs/db.js")
+await connectDB();
+
 
 
 const app = express();
