@@ -1,19 +1,38 @@
 import express ,{Request, Response} from "express"
 import dotenv from "dotenv";
 import cors from 'cors'
-dotenv.config();
+import MongoStore from 'connect-mongo'
 import connectDB from "./configs/db.js";
-// const connectDB = require("./configs/db.js")
+import session from "express-session"
 await connectDB();
-
+dotenv.config();
 
 
 const app = express();
 const port = process.env.PORT ||3000
 
+declare module 'express-session' {
+     interface SessionData {
+          isLoggedIn :boolean;
+          userId:string
+     }
+}
 
+app.use(session({
+     secret:process.env.SESSION_SECRET as string,
+     resave:false,
+     saveUninitialized:false,
+     cookie:{maxAge:1000*60*24*7}, //7 days
+     store:MongoStore.create({
+          mongoUrl:process.env.MONGODB_URL as string,
+          collectionName:"session"
+     })
+}));
 app.use(express.json())
-app.use(cors)
+app.use(cors({
+          origin:["htpp://localhost:5173"],
+          credentials:true
+     }))
 
 app.get("/",(req:Request,res:Response)=>{
      res.send("Server is Live")
