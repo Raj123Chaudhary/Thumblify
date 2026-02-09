@@ -9,6 +9,7 @@ const passwordRegex =
 // Controller for User Sign up 
 
 export const registerUser = async (req:Request,res:Response) =>{
+   console.log("Enter in registerUser")
    try {
      const {name,email,password} = req.body;
  // all field are available or not 
@@ -65,9 +66,6 @@ export const registerUser = async (req:Request,res:Response) =>{
       res.status(500).json({
          message:"Something went wrong , Please try again"
       })
-
-
-     
    }
 }
 
@@ -144,7 +142,14 @@ export const logoutUser = async (req:Request,res:Response) =>{
 
 export const verifyUser = async (req:Request,res:Response) =>{
    try {
-
+      const {userId} = req.session;
+      const user = await User.findById(userId);
+      if(!user){
+         return res.status(400).json({
+            message:"Invalid user"
+         })
+      }
+      return res.status(200).json({message:"Verify User",user:user})
       
    } catch (error) {
       console.error("User Verify Error: ",error);

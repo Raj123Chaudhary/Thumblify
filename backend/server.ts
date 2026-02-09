@@ -2,8 +2,11 @@ import express ,{Request, Response} from "express"
 import dotenv from "dotenv";
 import cors from 'cors'
 import MongoStore from 'connect-mongo'
+import mongoose from "mongoose";
 import connectDB from "./configs/db.js";
-import session from "express-session"
+import session from "express-session";
+import authRouter from "./routes/AuthRoutes.js";
+import { thumbnailRouter } from "./routes/ThumnailRoutes.js";
 await connectDB();
 dotenv.config();
 
@@ -28,11 +31,15 @@ app.use(session({
           collectionName:"session"
      })
 }));
+
+
 app.use(express.json())
 app.use(cors({
           origin:["htpp://localhost:5173"],
           credentials:true
-     }))
+     }));
+app.use("/api/auth",authRouter);
+app.use("/api/thumbnail",thumbnailRouter)
 
 app.get("/",(req:Request,res:Response)=>{
      res.send("Server is Live")
