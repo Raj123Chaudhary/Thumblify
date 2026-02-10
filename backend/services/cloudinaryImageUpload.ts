@@ -11,7 +11,7 @@ export const uploadBase64ToCloudinary = async (
       resource_type: "image",
     }
   );
-  console.log(result.secure_url)
+  // console.log(result.secure_url)
 
   return {
 

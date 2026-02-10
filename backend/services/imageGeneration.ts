@@ -1,31 +1,36 @@
 import { stabilityClient } from "../configs/stability.js";
 import fs from 'fs'
-import cloudinary from "../configs/cloudinary.js";
 import { uploadBase64ToCloudinary } from "./cloudinaryImageUpload.js";
+
 
 export const generateImageFromPrompt = async (prompt: string) => {
   try {
-    const response = await stabilityClient.post(
-      "/v1/generation/stable-diffusion-xl-1024-v1-0/text-to-image",
+   const response = await stabilityClient.post(
+  "/v1/generation/stable-diffusion-xl-1024-v1-0/text-to-image",
+  {
+    text_prompts: [
+      { text: prompt, weight: 10 },
       {
-        text_prompts: [
-          {
-            text: prompt,
-            weight: 1,
-          },
-        ],
-        cfg_scale: 7,
-        height: 1024,
-        width: 1024,
-        samples: 1,
-        steps: 30,
-      }
-    );
+        text: "text, letters, words, logo, watermark, blurry, low quality, distorted face",
+        weight: -1,
+      },
+    ],
+    cfg_scale: 8,
+    height: 1024,
+    width: 1024,
+    samples: 1,
+    steps: 35,
+  }
+);
 
     const image = response.data.artifacts[0];
  if (!image?.base64) {
     throw new Error("Image generation failed");
   }
+  //saving in local
+  // const buffer = Buffer.from(image.base64, "base64");
+  //   fs.writeFileSync("test.png", buffer);
+
 
   // Upload to Cloudinary
   const uploaded = await uploadBase64ToCloudinary(image.base64);

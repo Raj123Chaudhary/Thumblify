@@ -1,4 +1,3 @@
-import { mapValue } from "motion";
 import { colorSchemes } from "../assets/assets";
 const ColorSchemeSelector = ({
   value,

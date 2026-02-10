@@ -29,9 +29,8 @@ export interface Ithumbnail extends Document{
     prompt_used: {type:String},
     user_prompt: {type:String},
     isGenerating: {type:Boolean,default:true},
-    createdAt: Date,
-    updatedAt: Date,
- })
+    
+ },{timestamps:true})
        
 
 

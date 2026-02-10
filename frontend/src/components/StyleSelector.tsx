@@ -22,8 +22,8 @@ const StyleSelector = ({
 }) => {
   const styleDescriptions: Record<ThumbnailStyle, string> = {
     "Bold & Graphic": "High contrast, bold typography , strinking visulas",
-    Minimalist: "Clean, simple, lots of white space",
-    Photorealistic: "Photo-based ,natural looking",
+    " Minimalist": "Clean, simple, lots of white space",
+    " Photorealistic": "Photo-based ,natural looking",
     Illustrated: "Hand-drawn, artistic, creative",
     "Tect/Futuristic": "Modern,sleek,tech-inspired",
   };
