@@ -8,7 +8,7 @@ import Generate from "./pages/Generate";
 import MyGeneration from "./pages/MyGeneration";
 import YtPreview from "./pages/YtPreview";
 import Login from "./components/login";
-
+import { Toaster } from "react-hot-toast";
 import { useEffect } from "react";
 
 export default function App() {
@@ -20,6 +20,7 @@ export default function App() {
 
   return (
     <>
+      <Toaster />
       <LenisScroll />
       <Navbar />
       <Routes>
