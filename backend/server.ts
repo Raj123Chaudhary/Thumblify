@@ -29,14 +29,13 @@ app.use(
 app.set("trust proxy", 1);
 app.use(
   session({
-    name: "thumblify.sid", // 👈 IMPORTANT
     secret: process.env.SESSION_SECRET as string,
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: true,
+      secure: process.env.NODE_ENV === "production",
       httpOnly: true,
-      sameSite: "none",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       maxAge: 1000 * 60 * 24 * 7,
     }, //7 days
     store: MongoStore.create({
