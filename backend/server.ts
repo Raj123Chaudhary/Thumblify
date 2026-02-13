@@ -20,13 +20,14 @@ declare module "express-session" {
     userId: string;
   }
 }
+app.set("trust proxy", 1);
 app.use(
   cors({
     origin: ["http://localhost:5173", "https://thumblify-bay.vercel.app"],
     credentials: true,
   }),
 );
-app.set("trust proxy", 1);
+
 app.use(
   session({
     secret: process.env.SESSION_SECRET as string,
