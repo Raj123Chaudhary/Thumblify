@@ -28,6 +28,7 @@ app.use(
 );
 app.use(
   session({
+    name: "thumblify.sid", // 👈 IMPORTANT
     secret: process.env.SESSION_SECRET as string,
     resave: false,
     saveUninitialized: false,
