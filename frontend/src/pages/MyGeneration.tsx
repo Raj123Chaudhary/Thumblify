@@ -3,8 +3,11 @@ import SoftBackdrop from "../components/SoftBackdrop";
 import { dummyThumbnails, type IThumbnail } from "../assets/assets";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowUpRightIcon, DownloadIcon, TrashIcon } from "lucide-react";
-
+import { useAuth } from "../contexts/AuthContext";
+import { apiConnector } from "../configs/apiConnector";
+import toast from "react-hot-toast";
 const MyGeneration = () => {
+  const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
   const [thumbnails, setThumbnails] = useState<IThumbnail[]>([]);
   const [loading, setLoading] = useState(true);
@@ -13,19 +16,32 @@ const MyGeneration = () => {
     "1:1": "aspect-square",
     "9:16": "aspect-[9/16]",
   };
-  const fetchThumnails = async () => {
-    setThumbnails(dummyThumbnails as unknown as IThumbnail[]);
-    setLoading(false);
+  const fetchThumbnails = async () => {
+    try {
+      setLoading(true);
+      const { data } = await apiConnector("GET", "api/user/allThumbnail");
+      console.log(data);
+      setThumbnails(data.thumbnails || []);
+    } catch (error: any) {
+      console.log("Error in fetching in thumbnail in my generation :", error);
+      toast.error(error?.message);
+    } finally {
+      setLoading(false);
+    }
   };
   const handleDownload = (image_url: string) => {
-    window.open(image_url, "_blank");
+    const link = document.createElement("a");
+    link.href = image_url.replace("/upload", "/upload/fl_attachment");
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
   };
   const handleDelete = async (id: string) => {
     console.log(id);
   };
   useEffect(() => {
-    fetchThumnails();
-  }, []);
+    if (isLoggedIn) fetchThumbnails();
+  }, [isLoggedIn]);
   return (
     <div>
       <SoftBackdrop />
@@ -67,13 +83,14 @@ const MyGeneration = () => {
         {!loading && thumbnails.length > 0 && (
           <div className="columns-1 sm:columns-2 lg:columns-3 2xl:columns-4 gap-8">
             {thumbnails.map((thumb: IThumbnail) => {
+              console.log(thumb);
               const aspectClass =
                 aspectRatioClassMap[thumb.aspect_ratio || "16:9"];
               return (
                 <div
                   className="mb-8 group relative cursor-pointer rounded-2xl bg-white/6 border-white/10 transition shadow-xl break-inside-avoid"
                   key={thumb._id}
-                  onClick={() => navigate(`/generate/${thumb._id}`)}
+                  onClick={() => navigate(`/generate/${thumb.userId}`)}
                 >
                   {/* IMAGE  */}
                   {
@@ -82,6 +99,7 @@ const MyGeneration = () => {
                     >
                       {thumb.image_url ? (
                         <img
+                          loading="lazy"
                           src={thumb.image_url}
                           alt={thumb.title}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"

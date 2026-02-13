@@ -7,6 +7,7 @@ import { button, div } from "motion/react-client";
 
 export default function Navbar() {
   const { isLoggedIn, user, logout } = useAuth();
+  console.log("isLoggedIn", isLoggedIn);
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -40,12 +41,12 @@ export default function Navbar() {
               My Genration
             </Link>
           ) : (
-            <Link className="hover:text-pink-300 transition" to={"#"}>
+            <Link className="hover:text-pink-300 transition" to={"/about"}>
               About
             </Link>
           )}
 
-          <Link to={"#"} className="hover:text-pink-300 transition">
+          <Link to={"/contact"} className="hover:text-pink-300 transition">
             Contact Us
           </Link>
         </div>
@@ -107,8 +108,10 @@ export default function Navbar() {
           </Link>
         ) : (
           <Link
-            onClick={() => setIsOpen(false)}
-            to={"#"}
+            onClick={() => {
+              setIsOpen(false);
+            }}
+            to={"/about"}
             className="hover:text-pink-300 transition"
           >
             {" "}
@@ -118,7 +121,7 @@ export default function Navbar() {
 
         <Link
           onClick={() => setIsOpen(false)}
-          to={"#"}
+          to={"/contact"}
           className="hover:text-pink-300 transition"
         >
           {" "}

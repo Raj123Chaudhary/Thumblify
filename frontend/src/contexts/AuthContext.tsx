@@ -4,6 +4,7 @@ import { apiConnector } from "../configs/apiConnector";
 import { Auth_Api } from "../services/apis";
 import { toast } from "react-hot-toast";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext<AuthContextProps>({
   isLoggedIn: false,
@@ -30,6 +31,7 @@ interface AuthContextProps {
 }
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const navigate = useNavigate();
   const [user, setUser] = useState<IUser | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const signup = async ({
@@ -42,7 +44,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     password: string;
   }) => {
     try {
-      console.log("i am in sigup authContext");
       const { data } = await apiConnector("POST", Auth_Api.SIGNUP, {
         name,
         email,
@@ -64,13 +65,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     email: string;
     password: string;
   }) => {
-    console.log("I am i AuthContext login ");
     try {
       const { data } = await apiConnector("POST", Auth_Api.LOGIN, {
         email,
         password,
       });
-      console.log(data);
+
       if (data.user) {
         setUser(data.user as IUser);
         setIsLoggedIn(true);
@@ -82,13 +82,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
   const logout = async () => {
     try {
-      console.log("i am in logout function");
       const { data } = await axios.post(
         "http://localhost:4001/api/auth/logout",
       );
       // const { data } = await apiConnector("POST", Auth_Api.LOGOUT);
       setUser(null);
       setIsLoggedIn(false);
+      navigate("/");
       toast.success(data.message);
     } catch (error: any) {
       console.log("Error in logout: ", error.message);
@@ -97,10 +97,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const fetchUser = async () => {
     try {
       const { data } = await apiConnector("GET", Auth_Api.VERIFY);
-      console.log("fetch User : ", data);
+      console.log("data:", data);
       if (data.user) {
+        console.log("data user :", data.user);
         setUser(data.user as IUser);
-        setIsLoggedIn(false);
+        setIsLoggedIn(true);
       }
 
       toast.success(data.message);

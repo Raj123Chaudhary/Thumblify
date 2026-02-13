@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import type { IThumbnail, AspectRatio } from "/src/assets/assets";
+
 import SoftBackdrop from "../components/SoftBackdrop";
+import axios from "axios";
 
 import AspectRatioSelector from "../components/AspectRatioSelector";
 import {
   colorSchemes,
   dummyThumbnails,
+  type AspectRatio,
+  type IThumbnail,
   type ThumbnailStyle,
 } from "../assets/assets";
 import StyleSelector from "../components/StyleSelector";
@@ -40,33 +43,67 @@ const Generate = () => {
     setLoading(true);
     const api_payload = {
       title,
-      prompt: additionalDetails,
+      user_prompt: additionalDetails,
       style,
-      aspect_ration: aspectRatio,
+      aspect_ratio: aspectRatio,
       color_scheme: colorSchemeId,
       text_overlay: true,
     };
-
-    const { data } = await apiConnector(
-      "POST",
-      "/api/thumbnail/generateThumbnail",
-      api_payload,
-    );
-    if (data.thumnail) {
-      navigate("/generate/" + data.thumbnail._id);
-      toast.success(data.message);
-    }
-  };
-  const fetchThumnail = async () => {
+    // console.log("1. i am in handle generate function ");
+    // console.log(api_payload);
     try {
-      const { data } = await apiConnector("GET");
-    } catch (error) {}
-  };
-  useEffect(() => {
-    if (id) {
-      fetchThumnail();
+      const { data } = await apiConnector(
+        "POST",
+        "/api/thumbnail/generateThumbnail",
+        api_payload,
+      );
+      // const { data } = await axios.post(
+      //   "http://localhost:4001/api/thumbnail/generateThumbnail",
+      //   api_payload,
+      // );
+      // console.log("data in generate:", data);
+      if (data.thumbnail) {
+        navigate("/generate/" + data.thumbnail.userId);
+        toast.success(data.message);
+      }
+    } catch (error: any) {
+      console.log("Error in generating thumbnail :", error.message);
     }
-  }, [id]);
+  };
+  const fetchThumbnail = async () => {
+    try {
+      const { data } = await apiConnector("GET", `/api/user/thumbnails/${id}`);
+
+      const thumb = data?.thumbnails; // ✅ correct key
+
+      setThumbnail(thumb);
+      setTitle(thumb?.title ?? "");
+      setAdditionalDetails(thumb?.user_prompt ?? "");
+      setColorSchemeId(thumb?.color_scheme);
+      setAspectRatio(thumb?.aspect_ratio);
+      setStyle(thumb?.style);
+
+      // loading should depend ONLY on image_url
+      setLoading(!thumb?.image_url);
+    } catch (error: any) {
+      console.log("Not fetch thumbnail:", error.message);
+    }
+  };
+
+  useEffect(() => {
+    if (isLoggedIn && id) {
+      fetchThumbnail();
+    }
+    if (id && loading && isLoggedIn) {
+      const interval = setInterval(() => {
+        fetchThumbnail();
+      }, 5000);
+      return () => clearInterval(interval);
+    }
+  }, [id, loading, isLoggedIn]);
+  useEffect(() => {
+    if (!id && thumbnail) setThumbnail(null);
+  }, [pathname]);
 
   return (
     <>

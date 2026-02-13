@@ -148,7 +148,7 @@ export const verifyUser = async (req: Request, res: Response) => {
         message: "Invalid user",
       });
     }
-    return res.status(200).json({ message: "Verify User", data: user });
+    return res.status(200).json({ message: "Verify User", user: user });
   } catch (error) {
     console.error("User Verify Error: ", error);
     return res.status(500).json({

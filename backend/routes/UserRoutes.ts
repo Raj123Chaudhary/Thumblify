@@ -1,8 +1,11 @@
 import express from "express";
-import { getUserThumbnail } from "../controllers/UserController.js";
+import {
+  getUserAllThumbnail,
+  getUserThumbnail,
+} from "../controllers/UserController.js";
 
 const userRouter = express.Router();
 
-userRouter.get("/thumnails/:id", getUserThumbnail);
-
+userRouter.get("/thumbnails/:id", getUserThumbnail);
+userRouter.get("/allThumbnail", getUserAllThumbnail);
 export default userRouter;

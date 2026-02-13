@@ -1,6 +1,6 @@
-import express from "express"
+import express from "express";
 import { generateThumbnail } from "../controllers/ThumbnailController.js";
 
- export const thumbnailRouter = express.Router();
+export const thumbnailRouter = express.Router();
 
- thumbnailRouter.get("/generateThumbnail",generateThumbnail)
+thumbnailRouter.post("/generateThumbnail", generateThumbnail);
