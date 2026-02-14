@@ -40,8 +40,8 @@ app.use(
     cookie: {
       secure: process.env.NODE_ENV === "production",
       httpOnly: true,
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-      maxAge: 1000 * 60 * 24 * 7,
+      sameSite: process.env.NODE_ENV !== "production" ? "none" : "lax",
+      maxAge: 1000 * 60 *60* 24 * 7,
       path: "/",
     }, //7 days
     store: MongoStore.create({
