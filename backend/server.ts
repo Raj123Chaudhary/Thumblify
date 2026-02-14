@@ -23,7 +23,7 @@ declare module "express-session" {
 app.set("trust proxy", 1);
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://thumblify-bay.vercel.app"],
+    origin: ["http://localhost:5173", "https://thumblify-green.vercel.app"],
     credentials: true,
   }),
 );

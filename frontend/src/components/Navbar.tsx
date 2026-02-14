@@ -31,7 +31,7 @@ export default function Navbar() {
           </Link>
           <Link to={"/generate"} className="hover:text-pink-300 transition">
             {" "}
-            Genrate
+            Generate
           </Link>
           {isLoggedIn ? (
             <Link

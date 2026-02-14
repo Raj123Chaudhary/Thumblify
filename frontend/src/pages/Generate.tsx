@@ -173,7 +173,7 @@ const Generate = () => {
                   onClick={handleGenerate}
                   className="text-[15px] w-full py-3.5 roundedxl font-medium bg-linear-to-b from-pink-500 to-pink-600 hover:bg-pink-700 disabled:cursor-not-allowed transition-colors"
                 >
-                  {loading ? "Generating...;" : "Generate Thumnail"}
+                  {loading ? "Generating..." : "Generate Thumbnail"}
                 </button>
               )}
             </div>
