@@ -1,25 +1,19 @@
 import express, { Request, Response } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import MongoStore from "connect-mongo";
-import mongoose from "mongoose";
+
 import connectDB from "./configs/db.js";
-import session from "express-session";
 import authRouter from "./routes/AuthRoutes.js";
 import { thumbnailRouter } from "./routes/ThumnailRoutes.js";
 import userRouter from "./routes/UserRoutes.js";
+import cookieParser from "cookie-parser";
 await connectDB();
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-declare module "express-session" {
-  interface SessionData {
-    isLoggedIn: boolean;
-    userId: string;
-  }
-}
+app.use(cookieParser());
 
 app.use(
   cors({
@@ -31,26 +25,6 @@ app.use(
     credentials: true,
   }),
 );
-app.set("trust proxy", 1);
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET as string,
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      secure: process.env.NODE_ENV === "production",
-      httpOnly: true,
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
-      maxAge: 1000 * 60 * 24 * 7,
-      path: "/",
-    }, //7 days
-    store: MongoStore.create({
-      mongoUrl: process.env.MONGODB_URL as string,
-      collectionName: "session",
-    }),
-  }),
-);
-
 app.use(express.json());
 
 app.use("/api/auth", authRouter);

@@ -42,7 +42,8 @@ export const color_scheme_description = {
 
 export const generateThumbnail = async (req: Request, res: Response) => {
   try {
-    const { userId } = req.session;
+    // const { userId } = req.session;
+    const userId = (req as any)?.user?._id;
     if (!userId) {
       return res.status(401).json({ message: "UserId is not present" });
     }

@@ -3,7 +3,7 @@ import Thumbnail from "../models/thumbnail.js";
 
 export const getUserThumbnail = async (req: Request, res: Response) => {
   try {
-    console.log("i am in get user thumnail controller");
+    console.log("i am in get user thumbnail controller");
     const { id } = req.params;
     const thumbnails = await Thumbnail.findOne({ userId: id }).sort({
       createdAt: -1,
@@ -21,7 +21,8 @@ export const getUserThumbnail = async (req: Request, res: Response) => {
 export const getUserAllThumbnail = async (req: Request, res: Response) => {
   try {
     console.log("i am in getUserAlll thumbnail ");
-    const { userId } = req.session;
+    const userId = (req as any).user._id;
+    console.log("userId", userId);
     const thumbnails = await Thumbnail.find({ userId }).sort({
       createdAt: -1,
     }); //newest first

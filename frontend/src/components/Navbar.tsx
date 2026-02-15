@@ -3,11 +3,10 @@ import { useState } from "react";
 import { motion } from "motion/react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-import { button, div } from "motion/react-client";
 
 export default function Navbar() {
   const { isLoggedIn, user, logout } = useAuth();
-  console.log("isLoggedIn", isLoggedIn);
+  console.log("isLoggedIn ", isLoggedIn);
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 

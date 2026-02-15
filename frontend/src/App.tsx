@@ -14,7 +14,11 @@ const Generate = lazy(() => import("./pages/Generate"));
 const MyGeneration = lazy(() => import("./pages/MyGeneration"));
 import About from "./pages/About";
 import ContactUs from "./pages/Contact";
-
+// import {isLogin} from "./utils/PrivateRoutes"
+// import IsLogin from "./utils/PrivateRoutes"
+// import IsLogin from "./utils"
+// import IsLogin from "./utils/PrivateRoutes"
+import IsLogin from "./utils/PrivateRoutes";
 export default function App() {
   const location = useLocation();
   console.log(location);
@@ -35,6 +39,7 @@ export default function App() {
         <LenisScroll />
         <Navbar />
         <Routes>
+          {/* <Route path="/" element={<HomePage />} /> */}
           <Route path="/" element={<HomePage />} />
           <Route path="/generate" element={<Generate />} />
           <Route path="/generate/:id" element={<Generate />} />

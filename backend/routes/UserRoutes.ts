@@ -3,9 +3,10 @@ import {
   getUserAllThumbnail,
   getUserThumbnail,
 } from "../controllers/UserController.js";
+import { authMiddleware } from "../middlewares/authMiddlerware.js";
 
 const userRouter = express.Router();
 
-userRouter.get("/thumbnails/:id", getUserThumbnail);
-userRouter.get("/allThumbnail", getUserAllThumbnail);
+userRouter.get("/thumbnails/:id", authMiddleware, getUserThumbnail);
+userRouter.get("/allThumbnail", authMiddleware, getUserAllThumbnail);
 export default userRouter;
