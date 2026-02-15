@@ -18,7 +18,7 @@ import ContactUs from "./pages/Contact";
 // import IsLogin from "./utils/PrivateRoutes"
 // import IsLogin from "./utils"
 // import IsLogin from "./utils/PrivateRoutes"
-import IsLogin from "./utils/PrivateRoutes";
+
 export default function App() {
   const location = useLocation();
   console.log(location);
