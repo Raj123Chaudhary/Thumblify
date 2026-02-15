@@ -20,7 +20,7 @@ app.use(
     origin: [
       "http://localhost:5173",
       "http://localhost:4001",
-      "https://thumblify-lake.vercel.app/generate",
+      "https://thumblify-lake.vercel.app",
     ],
     credentials: true,
   }),
