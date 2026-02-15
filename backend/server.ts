@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
 import dotenv from "dotenv";
+dotenv.config();
 import cors from "cors";
 
 import connectDB from "./configs/db.js";
@@ -8,7 +9,6 @@ import { thumbnailRouter } from "./routes/ThumnailRoutes.js";
 import userRouter from "./routes/UserRoutes.js";
 import cookieParser from "cookie-parser";
 await connectDB();
-dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3000;

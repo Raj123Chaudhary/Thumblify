@@ -8,7 +8,7 @@ const passwordRegex =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
 // Controller for User Sign up
-
+const JWT_SECRET = process.env.JWT_SECRET as string;
 export const registerUser = async (req: Request, res: Response) => {
   console.log("Enter in registerUser controller");
   try {
@@ -55,7 +55,7 @@ export const registerUser = async (req: Request, res: Response) => {
         _id: newUser?._id,
         name: newUser?.name,
       },
-      "Secret",
+      JWT_SECRET,
       {
         expiresIn: "24h",
       },
@@ -63,9 +63,9 @@ export const registerUser = async (req: Request, res: Response) => {
     console.log("token:", token);
 
     const cookiesOptions = {
-      httpOnly: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      secure: process.env.NODE_ENV === "production",
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
       maxAge: 1000 * 60 * 60 * 24 * 7,
     };
 
@@ -118,16 +118,16 @@ export const loginUser = async (req: Request, res: Response) => {
         _id: user?._id,
         name: user?.name,
       },
-      "Secret",
+      JWT_SECRET,
       {
         expiresIn: "24h",
       },
     );
 
     const cookiesOptions = {
-      httpOnly: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      secure: process.env.NODE_ENV === "production",
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
       maxAge: 1000 * 60 * 60 * 24 * 7,
     };
     // return res
@@ -160,9 +160,9 @@ export const logoutUser = async (req: Request, res: Response) => {
   try {
     return res
       .clearCookie("token", {
-        httpOnly: process.env.NODE_ENV === "production",
-        sameSite: "lax",
-        secure: process.env.NODE_ENV === "production",
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
       })
       .status(200)
       .json({

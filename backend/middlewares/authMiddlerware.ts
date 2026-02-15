@@ -5,7 +5,7 @@ import type { Request, Response, NextFunction } from "express";
 interface AuthRequest extends Request {
   user?: string | JwtPayload;
 }
-
+const JWT_SECRET = process.env.JWT_SECRET as string;
 export const authMiddleware = (
   req: AuthRequest,
   res: Response,
@@ -20,7 +20,7 @@ export const authMiddleware = (
       });
     }
     try {
-      const decoded = jwt.verify(token, "Secret");
+      const decoded = jwt.verify(token, JWT_SECRET);
 
       req.user = decoded;
       next();
