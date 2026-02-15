@@ -67,6 +67,7 @@ const Generate = () => {
         toast.success(data.message);
       }
     } catch (error: any) {
+      setLoading(false);
       console.log("Error in generating thumbnail :", error.message);
     }
   };
