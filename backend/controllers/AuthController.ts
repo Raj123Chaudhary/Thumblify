@@ -67,6 +67,7 @@ export const registerUser = async (req: Request, res: Response) => {
       secure: true,
       sameSite: "none",
       path: "/",
+      domain: ".vercel.app",
 
       maxAge: 1000 * 60 * 60 * 24 * 7,
     };
@@ -130,6 +131,7 @@ export const loginUser = async (req: Request, res: Response) => {
       httpOnly: true,
       secure: true,
       sameSite: "none",
+      domain: ".vercel.app",
       path: "/",
 
       maxAge: 1000 * 60 * 60 * 24 * 7,
@@ -167,6 +169,8 @@ export const logoutUser = async (req: Request, res: Response) => {
         httpOnly: true,
         secure: true,
         sameSite: "none",
+
+        domain: ".vercel.app",
         path: "/",
       })
       .status(200)
