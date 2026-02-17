@@ -2,10 +2,14 @@ import User from "../models/user.js";
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 // import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+dotenv.config();
 import jwt from "jsonwebtoken";
+
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const passwordRegex =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+const isProduction = process.env.NODE_ENV == "production";
 
 // Controller for User Sign up
 const JWT_SECRET = process.env.JWT_SECRET as string;
@@ -64,10 +68,9 @@ export const registerUser = async (req: Request, res: Response) => {
 
     const cookiesOptions = {
       httpOnly: true,
-      secure: true,
-      sameSite: "none",
+      secure: isProduction,
+      sameSite: isProduction ? ("none" as const) : ("lax" as const),
       path: "/",
-      domain: ".vercel.app",
 
       maxAge: 1000 * 60 * 60 * 24 * 7,
     };
@@ -129,9 +132,8 @@ export const loginUser = async (req: Request, res: Response) => {
 
     const cookiesOptions = {
       httpOnly: true,
-      secure: true,
-      sameSite: "none",
-      domain: ".vercel.app",
+      secure: isProduction,
+      sameSite: isProduction ? ("none" as const) : ("lax" as const),
       path: "/",
 
       maxAge: 1000 * 60 * 60 * 24 * 7,
@@ -167,11 +169,11 @@ export const logoutUser = async (req: Request, res: Response) => {
     return res
       .clearCookie("token", {
         httpOnly: true,
-        secure: true,
-        sameSite: "none",
-
-        domain: ".vercel.app",
+        secure: isProduction,
+        sameSite: isProduction ? ("none" as const) : ("lax" as const),
         path: "/",
+
+        maxAge: 1000 * 60 * 60 * 24 * 7,
       })
       .status(200)
       .json({
