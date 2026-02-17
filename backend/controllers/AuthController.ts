@@ -66,6 +66,8 @@ export const registerUser = async (req: Request, res: Response) => {
       httpOnly: true,
       secure: true,
       sameSite: "none",
+      path: "/",
+
       maxAge: 1000 * 60 * 60 * 24 * 7,
     };
 
@@ -83,7 +85,7 @@ export const registerUser = async (req: Request, res: Response) => {
         },
       });
   } catch (error: any) {
-    console.error("Error while creating account", error);
+    console.error("Error while creating account", error.message);
     res.status(500).json({
       message: "Something went wrong , Please try again",
     });
@@ -128,6 +130,8 @@ export const loginUser = async (req: Request, res: Response) => {
       httpOnly: true,
       secure: true,
       sameSite: "none",
+      path: "/",
+
       maxAge: 1000 * 60 * 60 * 24 * 7,
     };
     // return res
@@ -163,6 +167,7 @@ export const logoutUser = async (req: Request, res: Response) => {
         httpOnly: true,
         secure: true,
         sameSite: "none",
+        path: "/",
       })
       .status(200)
       .json({
