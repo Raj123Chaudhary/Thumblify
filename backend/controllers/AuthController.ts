@@ -173,7 +173,7 @@ export const logoutUser = async (req: Request, res: Response) => {
         sameSite: isProduction ? ("none" as const) : ("lax" as const),
         path: "/",
 
-        maxAge: 1000 * 60 * 60 * 24 * 7,
+        maxAge: 0,
       })
       .status(200)
       .json({
