@@ -133,7 +133,7 @@ export const loginUser = async (req: Request, res: Response) => {
     const cookiesOptions = {
       httpOnly: true,
       secure: isProduction,
-      sameSite: !isProduction ? ("none" as const) : ("lax" as const),
+      sameSite: isProduction ? ("none" as const) : ("lax" as const),
       path: "/",
 
       maxAge: 1000 * 60 * 60 * 24 * 7,
@@ -170,7 +170,7 @@ export const logoutUser = async (req: Request, res: Response) => {
       .clearCookie("token", {
         httpOnly: true,
         secure: isProduction,
-        sameSite:  !isProduction ? ("none" as const) : ("lax" as const),
+        sameSite:  isProduction ? ("none" as const) : ("lax" as const),
         path: "/",
 
         maxAge: 0,
