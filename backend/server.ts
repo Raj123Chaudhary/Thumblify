@@ -21,7 +21,7 @@ app.use(
     origin: [
       "http://localhost:5173",
       "http://localhost:4001",
-      "https://thumblify-dun.vercel.app/",
+      "https://thumblify-dun.vercel.app",
     ],
     credentials: true,
   }),
