@@ -9,7 +9,7 @@ import jwt from "jsonwebtoken";
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const passwordRegex =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-const isProduction = process.env.NODE_ENV === "production";
+// const isProduction = process.env.NODE_ENV === "production";
 
 // Controller for User Sign up
 const JWT_SECRET = process.env.JWT_SECRET as string;
@@ -68,8 +68,9 @@ export const registerUser = async (req: Request, res: Response) => {
 
     const cookiesOptions = {
       httpOnly: true,
-      secure: isProduction,
-      sameSite: isProduction ? ("none" as const) : ("lax" as const),
+      secure: true,
+      // sameSite: isProduction ? ("none" as const) : ("lax" as const),
+      sameSite: "none",
       path: "/",
       maxAge: 1000 * 60 * 60 * 24 * 7,
     };
@@ -131,8 +132,9 @@ export const loginUser = async (req: Request, res: Response) => {
 
     const cookiesOptions = {
       httpOnly: true,
-      secure: isProduction,
-      sameSite: isProduction ? ("none" as const) : ("lax" as const),
+      secure: true,
+      // sameSite: isProduction ? ("none" as const) : ("lax" as const),
+      sameSite: "none",
       path: "/",
       maxAge: 1000 * 60 * 60 * 24 * 7,
     };
@@ -167,8 +169,9 @@ export const logoutUser = async (req: Request, res: Response) => {
     return res
       .clearCookie("token", {
         httpOnly: true,
-        secure: isProduction,
-        sameSite: isProduction ? ("none" as const) : ("lax" as const),
+        secure: true,
+        // sameSite: isProduction ? ("none" as const) : ("lax" as const),
+        sameSite: "none",
         path: "/",
       })
       .status(200)
