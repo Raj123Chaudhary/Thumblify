@@ -68,9 +68,9 @@ export const registerUser = async (req: Request, res: Response) => {
 
     const cookiesOptions = {
       httpOnly: true,
-      secure: true,
-      // sameSite: isProduction ? ("none" as const) : ("lax" as const),
-      sameSite: "none",
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV ? ("none" as const) : ("lax" as const),
+
       path: "/",
       maxAge: 1000 * 60 * 60 * 24 * 7,
     };
@@ -132,9 +132,8 @@ export const loginUser = async (req: Request, res: Response) => {
 
     const cookiesOptions = {
       httpOnly: true,
-      secure: true,
-      // sameSite: isProduction ? ("none" as const) : ("lax" as const),
-      sameSite: "none",
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV ? ("none" as const) : ("lax" as const),
       path: "/",
       maxAge: 1000 * 60 * 60 * 24 * 7,
     };
@@ -169,10 +168,11 @@ export const logoutUser = async (req: Request, res: Response) => {
     return res
       .clearCookie("token", {
         httpOnly: true,
-        secure: true,
         // sameSite: isProduction ? ("none" as const) : ("lax" as const),
-        sameSite: "none",
+        secure: process.env.NODE_ENV === "production",
+        sameSite: process.env.NODE_ENV ? ("none" as const) : ("lax" as const),
         path: "/",
+        expires: new Date(0),
       })
       .status(200)
       .json({
