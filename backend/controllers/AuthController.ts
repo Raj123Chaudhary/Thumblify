@@ -163,7 +163,6 @@ export const loginUser = async (req: Request, res: Response) => {
 // Controller for User logout
 export const logoutUser = async (req: Request, res: Response) => {
   console.log("i am in logout controller");
-
   try {
     return res
       .clearCookie("token", {

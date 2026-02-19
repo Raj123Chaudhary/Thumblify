@@ -4,7 +4,6 @@ import type { IUser } from "../assets/assets";
 import { apiConnector } from "../configs/apiConnector";
 import { Auth_Api } from "../services/apis";
 import { toast } from "react-hot-toast";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 /* ================= TYPES ================= */
@@ -96,13 +95,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logout = async () => {
     console.log("I am in auth context logout");
     try {
-      await axios.post(
-        "http://localhost:4001/api/auth/logout",
-        {},
-        {
-          withCredentials: true,
-        },
-      );
+      await apiConnector("POST", "/api/auth/logout");
 
       setUser(null);
       setIsLoggedIn(false);
@@ -111,6 +104,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       toast.success("Logged out successfully");
     } catch (error: any) {
+      console.log(error.message);
       toast.error(error.message || "Logout failed");
     }
   };

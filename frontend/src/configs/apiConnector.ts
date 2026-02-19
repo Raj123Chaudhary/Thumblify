@@ -36,7 +36,7 @@ export const apiConnector = async (
     const response = await axiosInstance({
       method,
       url,
-      data: bodyData,
+      data: bodyData ?? {},
       headers,
       params,
     });
